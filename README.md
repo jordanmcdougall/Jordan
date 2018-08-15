@@ -1,4 +1,4 @@
-From: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+ From: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
 # Headers are denoted by Hash (#)
 
@@ -55,7 +55,7 @@ Some text to show that the reference links can follow later.
 [1]: http://slashdot.org
 [link text itself]: http://www.reddit.com
 
-#Images
+# Images
 
 Here's our logo (hover to see the title text):
 
