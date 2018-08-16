@@ -18,9 +18,10 @@ To assist managing GCP resources used by the DEL the following naming and taggin
     * **SBN** for Subnet
     * **SGP** for Security Groups
     * **FWR** for Firewall Rules
-    * **RTT** for Route Tables
+    * **RTE** for Routes
     * **GCE** for Google Compute Engine
     * **EIP** for External IP Addresses (Public Facing)
+    * **VNP** for Virtual Network Peering
    * YYYYYYYY is a description or unique ID - for GCP instances use the first 3 characters for the OS e.g. WIN, LNX, RHL (suggest eight characters max for YYYYYYYY)
    * Four Tags are required on all entities to allow AWS resource consumption to be identified
         * Name	the value generated above if not already provided
@@ -128,3 +129,39 @@ The standard protocols and ports that should be allowed for each VPC are:
  * TCP 443  for HTTPS
  
  ## Routes
+
+Routes are used to configure the default gateway of for resources connected to the VPC to allow them to reach:
+ * The internet
+ * Other resources in the VPC
+ 
+The two routes are created by default when a new VPC is created, therefore no additional action is required. There is the option to create additional routs if this is indeed required.
+
+Routes accessed under Navigation Menu Services, Networking, VPC network, Routes.
+
+You can validate they have been provisioned correctly by finding the two entries with the **Network** value equal to the recently created network. Confirm the **Destination IP Ranges** value for the VPC network match the IP Address range Subnet that was created, and that the Default GAteway is set to 0.0.0.0/0.
+
+## VPC Network Peering 
+
+*Note: This is an optional step.*
+
+Cloud VPC Network Peering allows you to privately connect two VPC networks, which can reduce latency, cost and increase security. Note, that there should be no overlap in the subnets of the networks being peered.
+
+VPC Network Peering accessed under Navigation Menu Services, Networking, VPC network, VPC network peering.
+
+Click **Create connection**, then click **Continue**
+The project ID (if you are connecting to a VPC network in another project)
+The name of the VPC network that you want to peer with
+Note: The subnet IP ranges in peered VPC networks cannot overlap.
+
+| Field                | Value                       |
+|:-------------------- |:----------------------------|
+| Name                 | del-vnp-xxxxxxxx            |
+| Your VPC network     | del-vpc-xxxxxxxx            |
+| Peered VPC network   | Select the current project  |
+| VPC network name     | Name of another VPC         |
+
+Click **Create**.
+
+## Shared VPC
+
+Shared VPC is only available for projects within an organisation and is therefore not available in the GCP free tier.
