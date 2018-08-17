@@ -1,6 +1,6 @@
 # Google Cloud Platform
 
-This  prescribed manner in which DEL projects should construct and consume GCP elements for consumption in demonstrators.
+This prescribed manner in which DEL projects should construct and consume GCP elements for consumption in demonstrators.
 
 ## GCP Provisioning Sequence
 
@@ -20,8 +20,10 @@ To assist managing GCP resources used by the DEL the following naming and taggin
     * **FWR** for Firewall Rules
     * **RTE** for Routes
     * **ENG** for Google Compute Engine
-    * **EIP** for External IP Addresses (Public Facing)
+    * **EIP** for External IP Addresses (Public)
+    * **IIP** for Internal IP Addresses (Private)
     * **VNP** for Virtual Network Peering
+    * **DSK** for Virtual Hard Disk
    * YYYYYYYY is a description or unique ID - for GCP instances use the first 3 characters for the OS e.g. WIN, LNX, RHL (suggest eight characters max for YYYYYYYY)
    * Four Tags are required on all entities to allow AWS resource consumption to be identified
         * Name	the value generated above if not already provided
@@ -62,11 +64,11 @@ Set the Subnet creation mode to **Custom** and enter the following values:
 | Region                  | Use the [**europe_west2**](https://cloud.google.com/compute/docs/regions-zones/) region for London, UK |
 | IP Address range        | IP Address range in CIDR notation  e.g 10.0.1.0/24                                                     |
 | Private Google access   | Only **On** if Compute Engine will not have External IP Address                                        |
-| Flow logs               | **Off** as some some systems generate a large number of logs, which can increase costs in Stackdriver  |
+| Flow logs               | **Off** as some systems generate a large number of logs, which can increase costs in Stackdriver  |
 
 You can add additional Subnets if required by clicking the **Add subnet** button.
 
-Set Dynamic routing model to use the **Regional** option by default unless you plan on configuing a Hybrid cloud, in which case use the **Global** option.
+Set Dynamic routing model to use the **Regional** option by default unless you plan on configuring a Hybrid cloud, in which case use the **Global** option.
 
 Click **Create**.
 
@@ -90,9 +92,9 @@ Click on the **RESERVE STATIC ADDRESS** button
 
 Click **Reserve**.
 
-If succesfully reserved you will see a list of all External IP Addresses that have been requested. 
+If successfully reserved you will see a list of all External IP Addresses that have been requested. 
 
-Clicking on an external IP address in the list will allow you to add abels to that entry. The suggested lables are:
+Clicking on an external IP address in the list will allow you to add labels to that entry. The suggested labels are:
 
 | Key           | Value                         |
 |:------------- |:------------------------------|
@@ -115,14 +117,14 @@ In the console, specify:
 | Name          | del-fwr-yyyyyyyy             |
 | Description   | Description of demo/project  |
 | Network   | Name of the VPC that was just created |
-| Priority   | Used to specify the order a rule will be appied. Can be 0 - 65535, where the lower the number, the higher the priority |
+| Priority   | Used to specify the order in which a rule will be applied. Can be 0 - 65535, where the lower the number, the higher the priority |
 | Direction of traffic   | **Ingress** for data entering the VPC, **Egress** for data leaving the VPC  |
 | Action on match   | Specifies whether rule will **Allow** (whitelisted) or **Block** (blacklisted) traffic    |
 | Targets   |  All instances in the network |
 | Source filter (*ingress only*)  | Subnets  |
 | Source IP ranges (*ingress only*)  | To allow/block all IP addresses use **0.0.0.0/0** (less secure), for more granular rules, enter in specific IP Address or IP Address range (in CIDR notation)  |
 | Second source filter   | None (unless further granularity is required)  |
-| Protocols and ports   | Specified protocols and ports (standard ports & protocals below), then delimit with a semi-colon (**;**) - e.g. *Protocol1:Port1; Port2:Protocol2 Prot...* |
+| Protocols and ports   | Specified protocols and ports (standard ports & protocols below), then delimit with a semi-colon (**;**) - e.g. *Protocol1:Port1; Port2:Protocol2 Prot...* |
 | Enforcement  | Enabled  |
 
 The standard protocols and ports that should be allowed for each VPC are:
@@ -141,7 +143,7 @@ The two routes are created by default when a new VPC is created, therefore no ad
 
 Routes accessed under Navigation Menu Services, Networking, VPC network, Routes.
 
-You can validate they have been provisioned correctly by finding the two entries with the **Network** value equal to the recently created network. Confirm the **Destination IP Ranges** value for the VPC network match the IP Address range Subnet that was created, and that the Default GAteway is set to 0.0.0.0/0.
+You can validate they have been provisioned correctly by finding the two entries with the **Network** value equal to the recently created network. Confirm the **Destination IP Ranges** value for the VPC network match the IP Address range Subnet that was created, and that the Default Gateway is set to 0.0.0.0/0.
 
 ### VPC Network Peering 
 
@@ -179,39 +181,91 @@ Click **Create Instance**
 
 Enter the following info:
 
-| Field                | Value                       |
-|:-------------------- |:----------------------------|
-| Name                 | del-eng-xxxxxxxx            |
-| Region               | europe-west2            |
-| Zone                 | europe-west2-a/b/c depending on site resiliancy requirements |
-| Machine type         | Select appropriate hardware resources for desired workload  |
-| Container            | Select if instance will host containers        |
-| Boot disk            | Select the OS of the VM instance         |
-| Boot disk type       | SSD persistent disk        |
-| Boot disk size (GB)  | Will vary beteen OS - see OS vendor recomendation for boot partition capacity         |
-| Service Account      | Compute Engine default service account         |
-| Access scopes        | Allow default access         |
-| Firewall             | Always select **Allow HTTPS traffic**, only select **Allow HTTP traffic** if essential        |
+| Field                | Value                                                                                   |
+|:-------------------- |:----------------------------------------------------------------------------------------|
+| Name                 | del-eng-xxxxxxxx                                                                        |
+| Region               | europe-west2                                                                            |
+| Zone                 | europe-west2-a/b/c depending on site resiliency requirements                            |
+| Machine type         | Select appropriate hardware resources for desired workload                              |
+| Container            | Select if instance will host containers                                                 |
+| Boot disk            | Select the OS of the VM instance                                                        |
+| Boot disk type       | SSD persistent disk                                                                     |
+| Boot disk size (GB)  | Will vary between OS - see OS vendor recommendation for boot partition capacity         |
+| Service Account      | Compute Engine default service account                                                  |
+| Access scopes        | Allow default access                                                                    |
+| Firewall             | Always select **Allow HTTPS traffic**, only select **Allow HTTP traffic** if essential  |
 
 Click **Management, security, disks, networking, sole tenancy** to perform advanced configuration.
 
 ### Management
 
-| Field                | Value                       |
-|:-------------------- |:----------------------------|
-| Description                | Description of demo/project           |
-| Labels               | Add lable for Organization, Project and Owner       |
-| Enable deletion protection                 | europe-west2-a/b/c depending on site resiliancy requirements |
-| Metadata         | Add lable for Organization, Project and Owner    |
-| Preemptibility            | Select if instance will host containers        |
-| Automatic restart            | Select the OS of the VM instance         |
-| On host maintenence      | SSD persistent disk        |
+| Field                | Value                                            |
+|:-------------------- |:-------------------------------------------------|
+| Description          | Description of demo/project                      |
+| Labels               | Add label for Organization, Project and Owner    |
+|Deletion protection   | Enable deletion protection                       |
+| Metadata             | Add lable for Organization, Project and Owner    |
+| Preemptibility       | Off, unless VM instance is required for < 24hrs  |
+| Automatic restart    | On                                               |
+| On host maintenance  | Migrate VM instance                              |
 
 
 ## Security 
 
-## Disks, 
+No changes required.
 
-## Networking, 
+## Disks
+
+| Field                | Value                                       |
+|:-------------------- |:--------------------------------------------|
+| Deletion rule        | Delete boot disk when interface is deleted  |
+| Encryption           | Google-managed key                          |
+
+
+If a new disk is required, click **Add new disk**.
+
+*Note: It's recommended that applications and data are stored on a separate drive to the boot partition.* 
+
+Be aware there is limited SSD capacity that is available in the GCP free tier. 
+
+| Field                | Value                                                                                 |
+|:---------------|:--------------------------------------------------------------------------------------------|
+| Name           | del-dsk-xxxxxxxx                                                                            |
+| Type           | SSD persistent disk for workload that require higher IOPS, Standard persistent disk if not  |
+| Source type    | Blank disk                                                                                  |
+| Source image   | Google-managed key                                                                          |
+| Mode           | Read/Write                                                                                  |
+| Deletion rule  | Keep disk                                                                                   |
+| Size (GB)      | Will vary project to project                                                                |
+| Encryption     | Google-managed key                                                                          |
+
+Click **Done**
+
+
+
+## Networking 
+
+In the Network tags enter the VPC name.
+
+Remove the default interface, then click **Add network interface**.
+
+| Field                | Value                                                 |
+|:-------------------- |:------------------------------------------------------|
+| Network              | del-vpc-xxxxxxxx                                      |
+| Subnetwork           | del-sbn-xxxxxxxx                                      |
+| Primary internal IP  | Reserve static IP address                             |
+| Name                 | del-iip-xxxxxxxx                                      |
+| Description          | Description of demo/project                           |
+| Subnetwork           | del-sbn-xxxxxxxx                                      |
+| Static IP address    | X.X.X.that is unallocated and exists in subnet range  |
+| External IP address  | Empheral                                              |
+| Network Service Tier | Premium                                               |
+
+Click **Done**
 
 ## Sole Tenancy
+
+This step is not required and can therefore not be ignored.
+
+
+Click **Create**.
