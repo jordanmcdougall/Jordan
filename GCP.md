@@ -19,7 +19,7 @@ To assist managing GCP resources used by the DEL the following naming and taggin
     * **SGP** for Security Groups
     * **FWR** for Firewall Rules
     * **RTE** for Routes
-    * **GCE** for Google Compute Engine
+    * **ENG** for Google Compute Engine
     * **EIP** for External IP Addresses (Public Facing)
     * **VNP** for Virtual Network Peering
    * YYYYYYYY is a description or unique ID - for GCP instances use the first 3 characters for the OS e.g. WIN, LNX, RHL (suggest eight characters max for YYYYYYYY)
@@ -28,8 +28,11 @@ To assist managing GCP resources used by the DEL the following naming and taggin
         * Organisation	always DEL
         * Project	the related DEL project or initiative
         * Owner the owning DEL team member in the form firstname-lastname
-        
-## Virtual Private Cloud
+
+## Networking
+
+
+### Virtual Private Cloud
 
 To provide a home for your resources a Virtual Private Cloud (VPC) must be created.  Each project/demo/initiative that requires GCP resources can create its own VPC.
 
@@ -67,7 +70,7 @@ Set Dynamic routing model to use the **Regional** option by default unless you p
 
 Click **Create**.
 
-## External IP addresses
+### External IP addresses
 
 Accessed under Navigation Menu Services, Networking, VPC network, External IP addresses.
 
@@ -97,7 +100,7 @@ Clicking on an external IP address in the list will allow you to add abels to th
 | Project       | Description of demo/project   |
 | Owner         | The project owner             |
 
-## Firewall Rules
+### Firewall Rules
 
 To open up external ports within a VPC, an entry to the Firewall rules needs to be created.
 
@@ -128,7 +131,7 @@ The standard protocols and ports that should be allowed for each VPC are:
  * TCP:80   for HTTP
  * TCP 443  for HTTPS
  
- ## Routes
+### Routes
 
 Routes are used to configure the default gateway of for resources connected to the VPC to allow them to reach:
  * The internet
@@ -140,7 +143,7 @@ Routes accessed under Navigation Menu Services, Networking, VPC network, Routes.
 
 You can validate they have been provisioned correctly by finding the two entries with the **Network** value equal to the recently created network. Confirm the **Destination IP Ranges** value for the VPC network match the IP Address range Subnet that was created, and that the Default GAteway is set to 0.0.0.0/0.
 
-## VPC Network Peering 
+### VPC Network Peering 
 
 *Note: This is an optional step.*
 
@@ -162,6 +165,53 @@ Note: The subnet IP ranges in peered VPC networks cannot overlap.
 
 Click **Create**.
 
-## Shared VPC
+### Shared VPC
 
 Shared VPC is only available for projects within an organisation and is therefore not available in the GCP free tier.
+
+## Cloud Engine
+
+Cloud Engine can be accessed under Navigation Menu, Compute, Cloud Engine.
+
+### VM Instances
+
+Click **Create Instance**
+
+Enter the following info:
+
+| Field                | Value                       |
+|:-------------------- |:----------------------------|
+| Name                 | del-eng-xxxxxxxx            |
+| Region               | europe-west2            |
+| Zone                 | europe-west2-a/b/c depending on site resiliancy requirements |
+| Machine type         | Select appropriate hardware resources for desired workload  |
+| Container            | Select if instance will host containers        |
+| Boot disk            | Select the OS of the VM instance         |
+| Boot disk type       | SSD persistent disk        |
+| Boot disk size (GB)  | Will vary beteen OS - see OS vendor recomendation for boot partition capacity         |
+| Service Account      | Compute Engine default service account         |
+| Access scopes        | Allow default access         |
+| Firewall             | Always select **Allow HTTPS traffic**, only select **Allow HTTP traffic** if essential        |
+
+Click **Management, security, disks, networking, sole tenancy** to perform advanced configuration.
+
+### Management
+
+| Field                | Value                       |
+|:-------------------- |:----------------------------|
+| Description                | Description of demo/project           |
+| Labels               | Add lable for Organization, Project and Owner       |
+| Enable deletion protection                 | europe-west2-a/b/c depending on site resiliancy requirements |
+| Metadata         | Add lable for Organization, Project and Owner    |
+| Preemptibility            | Select if instance will host containers        |
+| Automatic restart            | Select the OS of the VM instance         |
+| On host maintenence      | SSD persistent disk        |
+
+
+## Security 
+
+## Disks, 
+
+## Networking, 
+
+## Sole Tenancy
