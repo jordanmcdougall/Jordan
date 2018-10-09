@@ -2,7 +2,7 @@
 
 Using a Windows 10 device, the Smart Factory web interface can be presented to the user in Kiosk Mode using the in-built Windows 10 feature Assigned Access. This limits the user interaction only to a Microsoft Edge Browser Session such that the user cannot do anything on the device outside of the kiosk app.
 
-*Note: This feature requires Windows 10, Version 1809*
+*Note: This feature requires Windows 10, Version 1809*.
 
 ### Configuation
 
