@@ -14,11 +14,11 @@ Navigate to Start > Settings > Accounts > Other Users
 
 Select Set up a kiosk > Assigned access, and then select Get started.
 
-![alt text][logo]
+![Setup](https://github.com/jordanmcdougall/Jordan/blob/master/Kiosk/static/images/01_setup_a_kiosk.png)
 
 When prompted enter a new name for the account. E.g. DEL-KIOSK-USER 
 
 
 Note this name is the Display Name and is not the User Logon Name\SAMAccount Name. This will create a new user to run the browser in Assigned Access mode.
 
-[logo]:../static/images/01_setup_a_kiosk.png
+
