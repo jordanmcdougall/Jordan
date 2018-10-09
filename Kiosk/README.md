@@ -18,6 +18,8 @@ Select Set up a kiosk > Assigned access, and then select Get started.
 
 ![Setup](https://github.com/jordanmcdougall/Jordan/blob/master/Kiosk/static/images/01_setup_a_kiosk.png)
 
+#### Create a Local User
+
 When prompted enter a new Display Name for the account. E.g. DEL-KIOSK-USER. 
 
 This will create a new local user account named **kioskUser0** with a Display Name that was just defined.
